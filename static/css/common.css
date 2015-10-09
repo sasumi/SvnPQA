@@ -1,0 +1,53 @@
+#page {display:flex}
+
+.SERVER-IDENTIFY-DEV #header:after, .SERVER-IDENTIFY-BETA #header:after, .SERVER-IDENTIFY-GAMMA #header:after, .SERVER-IDENTIFY-IDC #header:after {display:none;}
+
+#header {height:auto; padding:0; background-color:#061318; border:none;}
+#logo { display:none;}
+#welcome { position:absolute; top:0; right:0; margin:0; background-color:white;}
+#welcome .user-panel {display:none;}
+#welcome .user {padding:10px 20px; color:gray;}
+
+#main-nav {float:none; position:relative; margin:0; width:80px; display:block; background-color:#222;}
+#main-nav li { float:none; margin-right:0;}
+#main-nav li:hover .sub-nav {display:none;}
+#main-nav li>a:after { display:none;}
+#main-nav li>a {font-size:14px; padding:20px 0; text-align:center; color:#666; font-weight:bold}
+#main-nav li.active, #main-nav li:hover { background-color:#525456;}
+.active .sub-nav,
+#main-nav li:hover .sub-nav {display:none; width:100px; left:80px; top:0; height:100%; text-align:center; padding:0; box-shadow:none; background-color:#042D44;}
+#main-nav li:hover>a {color:white;}
+#main-nav li:hover {background-color:#525456;}
+#main-nav .sub-nav a {margin:0; padding:15px 0;}
+.sub-nav dd:hover {background-color:#4493C0}
+
+.dashboard {background-color:transparent}
+#container {flex:1; padding:0}
+#col-aside {padding:0; width:80px; background-color:#3C4752;}
+#col-main {background-color:transparent; box-shadow:-1px 0 15px #454545; padding:10px;}
+.aside-nav {padding:5px 0;}
+.aside-nav dd {margin:0;}
+.aside-nav dt {display:none}
+.aside-nav dd a {text-align:center; padding:15px 0; color:#aaa}
+.aside-nav dd a:hover, .aside-nav dd .active { background-color:#837E97; color:white}
+#footer {display:none}
+
+.well {border-radius:3px; background-color:rgba(0, 0, 0, 0.05);}
+
+.data-tbl {background-color:transparent;}
+.data-tbl thead tr:nth-child(odd),
+.data-tbl thead tr th { background-color:transparent; font-weight:normal;}
+.data-tbl tr:nth-child(odd) { background-color:#fff;}
+.data-tbl tr:hover td { background-color:#fafafa;}
+
+.frm {background-color:transparent}
+
+/** scroll on col-main **/
+html, body, #page, #container {height:100%; overflow:hidden;}
+#col-main {height:100%; overflow-y:scroll; padding:10px; box-sizing:border-box}
+
+.page-iframe,
+.page-iframe body,
+.page-iframe #page,
+.page-iframe #container {height:auto; overflow:auto}
+.page-iframe #col-main { overflow:auto; height:auto;}

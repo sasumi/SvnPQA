@@ -1,0 +1,1 @@
+<?php echo \SvnPQA\ViewBase::getSideMenu();?>
