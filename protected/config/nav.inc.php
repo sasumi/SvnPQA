@@ -8,12 +8,17 @@ return array(
 		),
 	)),
 	array('统计分析', 'CodeStore', array(
-		'代码库' => array(
-			array('花纸管理', 'articlecategory'),
+		'开发统计' => array(
+			array('开发统计', 'articlecategory'),
 		),
 	)),
-	array('系统设置', 'department', array(
-		'系统设置' => array(
+	array('报告', 'Report', array(
+		'开发统计' => array(
+			array('开发统计', 'articlecategory'),
+		),
+	)),
+	array('设置', 'department', array(
+		'设置' => array(
 			array('部门管理', 'department'),
 			array('用户管理', 'user'),
 			array('员工管理', 'employee'),
