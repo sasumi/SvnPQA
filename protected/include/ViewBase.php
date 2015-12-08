@@ -14,13 +14,13 @@ use function Lite\func\dump;
 class ViewBase extends View {
 	public static function getMainMenu(){
 		$data = Config::get('nav');
-		$mnu = new MenuHelper($data, 'SvnPQA\Model\Access::checkUriAccess');
+		$mnu = new MenuHelper($data);
 		return $mnu->getMainMenu();
 	}
 
 	public static function getSideMenu(){
 		$data = Config::get('nav');
-		$mnu = new MenuHelper($data, 'www\Model\Access::checkUriAccess');
+		$mnu = new MenuHelper($data);
 		return $mnu->getSideMenu();
 	}
 }

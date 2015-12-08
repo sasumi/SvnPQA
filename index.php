@@ -1,6 +1,6 @@
 <?php
 namespace SvnPQA;
 
-include '../litephp/bootstrap.php';
+include '../chinaerp/trunk/litephp/bootstrap.php';
 use Lite\Core\Application;
 Application::init(__NAMESPACE__);

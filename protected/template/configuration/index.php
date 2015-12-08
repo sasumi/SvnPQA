@@ -1,5 +1,5 @@
 <?php use SvnPQA\ViewBase;
-include $this->getTemplate('inc/header.inc.php');?>
+include $this->resolveTemplate('inc/header.inc.php');?>
 <div id="col-aside"><?php echo ViewBase::getSideMenu()?></div>
 <div id="col-main">
 	<div class="operate-bar">
@@ -41,4 +41,4 @@ include $this->getTemplate('inc/header.inc.php');?>
 	</table>
 	<?php echo $paginate; ?>
 </div>
-<?php include $this->getTemplate('inc/footer.inc.php');?>
+<?php include $this->resolveTemplate('inc/footer.inc.php');?>
