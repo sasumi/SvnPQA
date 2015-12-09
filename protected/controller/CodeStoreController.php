@@ -2,6 +2,8 @@
 namespace SvnPQA\controller;
 use function Lite\func\array_merge_recursive_distinct;
 use function Lite\func\dump;
+use function Lite\func\format_size;
+use function Lite\func\get_folder_size;
 use function Lite\func\glob_recursive;
 
 /**
@@ -32,11 +34,16 @@ class CodeStoreController extends BaseController{
         $default_file_list = array();
         $tmp = glob($path.'*');
         foreach($tmp as $k=>$f){
+            $is_dir = is_dir($f);
+            $size = format_size(!$is_dir ? filesize($f) : get_folder_size($f));
             $f = str_replace('\\', '/', $f);
             $f = str_ireplace($path, '', $f);
+
             $default_file_list[] = array(
                 'name' => $f,
-                'type' => ''
+                'css_class' => self::getTypeCssClass($f, $is_dir),
+                'is_folder' => $is_dir,
+                'size' => $size
             );
         }
 
@@ -44,6 +51,31 @@ class CodeStoreController extends BaseController{
             'tree_list' => $tree_list,
             'default_file_list' => $default_file_list
         );
+    }
+
+    private static function getTypeCssClass($file, $is_dir=false){
+        if($is_dir){
+            return 'fa fa-folder-o';
+        }
+        $ext = array_pop(explode('.',$file));
+        $map = array(
+            'text' => array('txt', 'md', 'yaml'),
+            'code' => array('php','js','html','css','py'),
+            'image' => array('jpg','png','jpeg','gif','bmp'),
+            'sound' => array('mp3', 'wav'),
+            'word' => array('doc','docx'),
+            'pdf' => array('pdf'),
+            'excel' => array('xls', 'xlsx'),
+            'powerpoint' => array('ppt','pptx'),
+            'zip' => array('zip','rar','7z','gz','tar'),
+        );
+
+        foreach($map as $t=>$l){
+            if(in_array($ext, $l)){
+                return 'fa fa-file-'.$t.'-o';
+            }
+        }
+        return 'fa fa-file-o';
     }
 
     private static function patch_path($tree, $parent_key){

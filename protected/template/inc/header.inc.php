@@ -24,6 +24,7 @@ $cdn_url = Config::get('app/cdn_url');
 	<script>
 		seajs.use('ywj/auto');
 	</script>
+    <?php echo $PAGE_HTML_HEAD ?: '';?>
 </head>
 <body>
 <div id="page">
