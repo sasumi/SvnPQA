@@ -8,5 +8,5 @@
 use Lite\Core\Router;
 
 return array(
-	'mode' => Router::MODE_REWRITE
+	'mode' => Router::MODE_NORMAL
 );

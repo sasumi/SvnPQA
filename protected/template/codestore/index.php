@@ -8,15 +8,25 @@ use SvnPQA\ViewBase;
 
 $tree_list = $this->getData('tree_list');
 $default_file_list = $this->getData('default_file_list');
+$current_path = $this->getData('current_path');
+$current_file = $this->getData('current_file');
 
-function show_tree($list, $exp_dep=5){
+$query_param = array(
+    'p' => $current_path,
+    'f' => $current_file,
+);
+
+function show_tree($list, $exp_dep=null, $cur_path=''){
+    $exp_dep = isset($exp_dep) ? $exp_dep : count(explode('/',trim($cur_path, '/')))-1;
 	$html = '';
 	foreach($list as $n=>$sub){
         $has_children = is_array($sub);
-		$html .= "<li class=\"".($has_children ? 'tree-has-children':'').($has_children && !$exp_dep ? ' tree-collapse':'').($n == '/root' ? ' tree-active' : '')."\">";
-        $html .= "<label data-path=\"".$n."\">".(array_pop(explode('/',$n)))."</label>";
+        $url = ViewBase::getUrl('CodeStore', array('p'=>$n));
+		$html .= "<li class=\"".($has_children ? 'tree-has-children':'').($has_children && !$exp_dep ? ' tree-collapse':'').($n == $cur_path ? ' tree-active' : '')."\">";
+        $html .= "<label>".
+            "<a href=\"$url\">".(array_pop(explode('/',$n)))."</a></label>";
 		if($has_children){
-			$html .= "<ul>".show_tree($sub, max($exp_dep-1, 0))."</ul>";
+			$html .= "<ul>".show_tree($sub, max($exp_dep-1, 0), $cur_path)."</ul>";
 		}
 		$html .= "</li>";
 	}
@@ -37,7 +47,7 @@ include $this->resolveTemplate('inc/header.inc.php');
 	<div class="file-explorer cus-scroll">
         <div class="col-tree">
             <ul class="tree-list">
-                <?php echo show_tree($tree_list);?>
+                <?php echo show_tree($tree_list, null, $current_path);?>
             </ul>
         </div>
         <div class="col-file-list">
@@ -60,7 +70,7 @@ include $this->resolveTemplate('inc/header.inc.php');
                         <tr>
                             <td>
                                 <span class="<?php echo $f['css_class'];?>"></span>
-                                <a href="">
+                                <a href="<?php echo $this->getUrl('CodeStore', array_merge($query_param, array('f'=>$f['name'])));?>">
                                     <?php echo $f['name'];?>
                                 </a>
                             </td>
@@ -137,19 +147,14 @@ seajs.use('jquery', function($){
     var URL = '<?php echo $this->getUrl('CodeStore');?>';
     var TOG_CLS = 'tree-collapse';
     $tree.delegate('.tree-has-children', 'click', function(e){
-        if(e.offsetX > 10 && e.offsetX < 24 && e.offsetY > 6 && e.offsetY < 20){
+        if(e.target.nodeName == 'LABEL'){
             $(this).toggleClass(TOG_CLS);
             if($(this).hasClass(TOG_CLS)){
                 $(this).find('.tree-has-children').addClass(TOG_CLS);
             }
+            e.stopPropagation();
+            e.preventDefault();
         }
-        e.stopPropagation();
-        e.preventDefault();
-    });
-    $tree.delegate('label', 'click', function(){
-        $tree.find('li').removeClass('tree-active');
-        $(this).parent().addClass('tree-active');
-        show_dir($(this).data('path'));
     });
 
     $(window).resize(function(){
@@ -170,10 +175,6 @@ seajs.use('jquery', function($){
         $('.col-file-list-wrap').height(top_h-40);
         $('.col-history-wrap').height(top_h-40);
     }).trigger('resize');
-
-    var show_dir = function(path){
-        location.hash = '#p='+encodeURI(path);
-    };
 
     $('.resizer').each(function(){
         var $resizer = $(this);

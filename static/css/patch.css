@@ -23,7 +23,7 @@
 
 .tree-list {font-size:13px; background-color:#fff;}
 .tree-list ul {border-left:1px dotted gray;}
-.tree-list label { position:relative; margin-left:10px; cursor:pointer; white-space:nowrap}
+.tree-list label { position:relative; padding-left:20px; margin-left:-10px; cursor:pointer; white-space:nowrap}
 .tree-list li {padding-left:15px; position: relative;}
 .tree-list li.tree-active>label {color:black; font-weight:bold}
 .tree-list .tree-has-children:before {content:"\f147"; display:block; font-family: FontAwesome, serif; position:absolute; left:10px; top:4px; cursor:pointer;}

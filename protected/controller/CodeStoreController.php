@@ -14,7 +14,8 @@ use function Lite\func\glob_recursive;
  */
 
 class CodeStoreController extends BaseController{
-    public function index(){
+    public function index($get){
+        $current_path = $get['p'];
         $path = 'd:/www/chinaerp/trunk/litephp/';
         $root_tag = 'root/';
         $files = glob_recursive($path . '*', GLOB_ONLYDIR);
@@ -32,7 +33,7 @@ class CodeStoreController extends BaseController{
         $tree_list = self::patch_path($tree_list, '');
 
         $default_file_list = array();
-        $tmp = glob($path.'*');
+        $tmp = glob($path.str_replace($root_tag, '',$current_path).'/*');
         foreach($tmp as $k=>$f){
             $is_dir = is_dir($f);
             $size = format_size(!$is_dir ? filesize($f) : get_folder_size($f));
@@ -48,6 +49,7 @@ class CodeStoreController extends BaseController{
         }
 
         return array(
+            'current_path' => $current_path,
             'tree_list' => $tree_list,
             'default_file_list' => $default_file_list
         );
