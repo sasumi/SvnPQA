@@ -107,22 +107,33 @@ include $this->resolveTemplate('inc/header.inc.php');
         </div>
     </div>
 
+    <div class="resizer resizer-h"></div>
+
     <div class="code-explorer cus-scroll">
-        <h3 class="caption"><?php echo $current_file ?: 'http://svn.oa.com/web/trunk/a.js';?></h3>
-        <div class="file-content">
-            <pre class="prettyprint lang-php linenums=true"><?php echo htmlspecialchars(file_get_contents('D:\www\litephp\src\DB\Model.php'));?></pre>
+        <div class="col-file-content">
+            <h3 class="caption"><?php echo $current_file ?: 'http://svn.oa.com/web/trunk/a.js';?></h3>
+            <div class="file-content">
+                <pre class="prettyprint lang-php linenums=true"><?php echo htmlspecialchars(file_get_contents('D:\www\litephp\src\DB\Model.php'));?></pre>
+            </div>
+        </div>
+        <div class="col-comment">
+            <h3 class="caption">Comment</h3>
+            <div class="comment-list-warp">
+                <ul class="comment-list"></ul>
+            </div>
         </div>
     </div>
 </div>
 <style>
     #container {padding-top:20px;}
-    .file-content {padding:10px; width:60%; height:500px; overflow-y:scroll;}
+    .file-content {padding:10px; height:500px; overflow-y:scroll;}
     .file-content .prettyprint {border:none;}
     .prettyprint ol.linenums li {display:list-item; list-style:decimal inside;}
 </style>
 <script>
 seajs.use('jquery', function($){
     var $tree = $('.tree-list');
+    var $body = $('body');
     var URL = '<?php echo $this->getUrl('CodeStore');?>';
     var TOG_CLS = 'tree-collapse';
     $tree.delegate('.tree-has-children', 'click', function(e){
@@ -141,9 +152,69 @@ seajs.use('jquery', function($){
         show_dir($(this).data('path'));
     });
 
+    $(window).resize(function(){
+        var $s = $('.repository-select');
+        var $f = $('.file-explorer');
+        var $c = $('.code-explorer');
+        var body_h = $body.height();
+        var h = body_h - ($s.offset().top + $s.outerHeight())-80;
+
+        var top_h = h*0.35;
+        var btm_h = h*0.65;
+
+        console.log($s.offset().top + $s.outerHeight(), h);
+        $f.height(top_h);
+        $c.height(btm_h);
+        $('.file-content').height(btm_h-70);
+
+        $('.col-file-list-wrap').height(top_h-40);
+        $('.col-history-wrap').height(top_h-40);
+    }).trigger('resize');
+
     var show_dir = function(path){
         location.hash = '#p='+encodeURI(path);
     };
+
+    $('.resizer').each(function(){
+        var $resizer = $(this);
+        var horizon = $resizer.hasClass('resizer-h');
+        var $body = $('body');
+        var resizing = false;
+        var start_region = null;
+        var start_pos = null;
+        $resizer.mousedown(function(e){
+            resizing = true;
+            start_pos = {
+                clientX: e.clientX,
+                clientY: e.clientY
+            };
+            start_region = {
+                top: parseInt($resizer.css('top'), 10),
+                left: parseInt($resizer.css('left'), 10)
+            };
+        });
+
+        $body.mousemove(function(e){
+            if(resizing){
+                if(horizon){
+                    $resizer.css('left', (start_region.top + e.clientY - start_pos.clientX) + 'px');
+                } else {
+                    $resizer.css('top', (start_region.left + e.clientX - start_pos.clientY) + 'px');
+                }
+                return false;
+            }
+        });
+
+        $body.mouseup(function(){
+            if(resizing){
+//                $('#header').css('width', $resizer.offset().left+'px');
+//                $resizer.css('left',0);
+//                $.cookie('resizer_hd_w', $resizer.offset().left);
+            }
+            resizing = false;
+        });
+    });
 });
+
 </script>
 <?php include $this->resolveTemplate('inc/footer.inc.php');?>
