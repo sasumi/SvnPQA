@@ -1,5 +1,6 @@
 <?php
 namespace SvnPQA\controller;
+use function Lite\func\array_last;
 use function Lite\func\array_merge_recursive_distinct;
 use function Lite\func\dump;
 use function Lite\func\format_size;
@@ -14,15 +15,15 @@ use function Lite\func\glob_recursive;
  */
 
 class CodeStoreController extends BaseController{
+    private static $path = 'd:/www/chinaerp/trunk/litephp';
+
     public function index($get){
-        $current_path = $get['p'];
-        $path = 'd:/www/chinaerp/trunk/litephp/';
-        $root_tag = 'root/';
-        $files = glob_recursive($path . '*', GLOB_ONLYDIR);
+        $root_tag = '/root';
+        $files = glob_recursive(self::$path.'/*', GLOB_ONLYDIR);
 
         foreach ($files as $k => $f) {
             $f = str_replace('\\', '/', $f);
-            $f = str_ireplace($path, '', $f);
+            $f = str_ireplace(self::$path, '', $f);
             $f = $root_tag . $f;
             $files[$k] = self::convert_path_to_array($f, true);
         }
@@ -32,26 +33,47 @@ class CodeStoreController extends BaseController{
         }
         $tree_list = self::patch_path($tree_list, '');
 
+        return array(
+            'tree_list' => $tree_list,
+        );
+    }
+
+    public function fileList($get){
+        $p = self::$path.$get['p'];
         $default_file_list = array();
-        $tmp = glob($path.str_replace($root_tag, '',$current_path).'/*');
+        $tmp = glob($p.'/*');
         foreach($tmp as $k=>$f){
             $is_dir = is_dir($f);
             $size = format_size(!$is_dir ? filesize($f) : get_folder_size($f));
             $f = str_replace('\\', '/', $f);
-            $f = str_ireplace($path, '', $f);
 
             $default_file_list[] = array(
-                'name' => $f,
+                'uri' => str_replace(self::$path, '', $f),
+                'name' => array_last(explode('/',$f)),
                 'css_class' => self::getTypeCssClass($f, $is_dir),
                 'is_folder' => $is_dir,
                 'size' => $size
             );
         }
+        return array(
+            'list' => $default_file_list
+        );
+    }
+
+    public function fileInfo($get){
+        $f = self::$path.$get['f'];
+        if(!is_file($f)){
+            return array();
+        }
+
+        $current_file_info = file_get_contents($f);
+        $type = array_last(explode('.', $f));
+        $name = basename($f);
 
         return array(
-            'current_path' => $current_path,
-            'tree_list' => $tree_list,
-            'default_file_list' => $default_file_list
+            'type' => $type,
+            'name' => $name,
+            'content' => $current_file_info,
         );
     }
 

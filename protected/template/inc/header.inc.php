@@ -14,9 +14,7 @@ $cdn_url = Config::get('app/cdn_url');
 	</script>
 	<?php
 	echo $this->getCss($cdn_url.'ywj/ui/backend/default.css');
-	echo $this->getCss($cdn_url.'ywj/ui/backend/theme-sidelayout.css');
 	echo $this->getCss($cdn_url.'ywj/ui/backend/font-awesome.css');
-	echo $this->getCss('patch.css');
 	echo $this->getJs($cdn_url.'seajs/sea.js');
 	echo $this->getJs($cdn_url.'seajs/config.js');
 	echo $this->getJs($cdn_url.'ywj/component/imagescale.js');
