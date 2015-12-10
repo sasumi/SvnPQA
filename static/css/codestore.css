@@ -1,10 +1,23 @@
-#col-main {position:relative;}
+html, body, #page {height:100%;}
+#page {display:flex; flex-direction:column;}
 
-#container {padding-top:20px;}
-.resizer-container {height:600px;}
+#header {border-bottom:none;}
+#container {padding:0; flex:1}
+#col-aside {display:none}
+#col-main {position:relative; background:none; box-shadow:none; display:flex; padding:0; flex-direction:column;}
+.resizer-container {flex:1}
+.store-warp {background:#fafafa; padding:10px; border-radius:3px; display:flex; flex-direction:row; flex:1}
+
 .file-content {padding:10px; overflow-y:scroll;}
-.file-content .prettyprint {border:none;}
-.prettyprint ol.linenums li {display:list-item; list-style:decimal inside;}
+.file-content .prettyprint {border:none; font-family:"Source Code Pro","Courier New", serif;}
+.prettyprint ol.linenums li {display:list-item; list-style:decimal inside; color:#ccc;}
+.prettyprint ol.linenums li:hover {background-color:#DEEFFF}
+
+body li.L1,
+body li.L3,
+body li.L5,
+body li.L7,
+body li.L9 {background-color:#fafafa}
 
 .resizer {height:15px; overflow:hidden; cursor:s-resize; position:absolute; width:100%;}
 .resizer:before {content:"..."; display:block; text-align:center; font-size:24px; color:#ddd; margin:-12px auto 0 auto; text-shadow:1px 1px 1px white}
@@ -20,24 +33,31 @@
 .file-explorer .data-tbl caption {box-shadow:none;}
 
 .repository-select {padding:5px; background-color:white; border:1px solid #ddd; border-radius:3px;}
-.col-tree {padding-right:20px; border-right:1px dotted #ccc; width:200px; overflow:scroll;}
-.col-file-list {flex:2; margin-left:20px; border-left:1px solid #fff;}
-.col-file-list-wrap,
-.col-history-wrap{overflow-y:scroll; height:320px;}
+.col-tree {padding-right:10px; border-right:1px solid #ddd; width:180px; overflow:scroll;}
+.col-file-list {padding:0 10px; border-left:1px solid #fff; width:300px;}
 .col-history {flex:2; margin-right:20px;}
 .code-explorer {display:flex; height:70%; background-color:white; overflow:hidden; border:1px solid #ddd; border-radius:3px; margin-top:10px;}
-.col-file-content {padding:10px; width:600px;}
+.col-code-explorer {padding:20px; background-color:white; box-shadow:1px 1px 6px #ccc; flex:1}
+.col-file-content {}
 .col-comment {flex:1; padding:10px;}
+
+.author-name {color:#ccc}
+
+.col-file-content .caption {clear:both; overflow:hidden;}
+.f-uri-list {float:left;}
+.f-uri-list span {color:#aaa; font-weight:normal;}
+.f-name {float:left;}
 
 [data-uri],
 [data-path]{color:#444; cursor:pointer; white-space:nowrap; line-height:1;}
 [data-path]:hover,
 [data-uri]:hover {color:#2e86cd}
 
-.tree-list {font-size:13px; background-color:#fff;}
+.tree-list {font-size:13px; background-color:#fafafa;}
 .tree-list ul {border-left:1px dotted gray;}
 .tree-list label {position:relative; padding-left:20px; margin-left:-10px;}
 .tree-list li {padding-left:15px; position: relative;}
+.file-active,
 .tree-list li.tree-active>label {font-weight:bold}
 .tree-list .tree-toggle {cursor:pointer; display:block; position:absolute; width:12px; height:16px; overflow:hidden; margin:4px 0 0 -5px; z-index:1}
 .tree-list .tree-toggle:before {content:"\f147"; display:block; color:gray; font-family: FontAwesome, serif}
@@ -47,4 +67,4 @@
 .tree-list .tree-has-children:after {width:8px;}
 .tree-list li:after {content:""; display:block; position:absolute; left:0; top:0; width:20px; height:13px; margin-left:-1px; border-bottom:1px dotted gray; border-left:1px dotted gray;}
 .tree-list>li:after {display:none;}
-.tree-list li:last-child {border-left:1px dotted #fff; margin-left:-1px}
+.tree-list li:last-child {border-left:1px dotted #fafafa; margin-left:-1px}

@@ -15,10 +15,10 @@ use function Lite\func\glob_recursive;
  */
 
 class CodeStoreController extends BaseController{
-    private static $path = 'd:/www/chinaerp/trunk/litephp';
+    private static $path = 'd:/www/SvnPQA';
 
     public function index($get){
-        $root_tag = '/root';
+        $root_tag = 'root';
         $files = glob_recursive(self::$path.'/*', GLOB_ONLYDIR);
 
         foreach ($files as $k => $f) {
@@ -41,6 +41,17 @@ class CodeStoreController extends BaseController{
     public function fileList($get){
         $p = self::$path.$get['p'];
         $default_file_list = array();
+
+        if($get['p'] != '/' && $get['p']){
+            $default_file_list[] = array(
+                'uri' => preg_replace('/\/[^\/]+$/','',$get['p']),
+                'name' => '[parent]',
+                'css_class' => self::getTypeCssClass(null, true),
+                'is_folder' => true,
+                'size' => ''
+            );
+        }
+
         $tmp = glob($p.'/*');
         foreach($tmp as $k=>$f){
             $is_dir = is_dir($f);
@@ -55,12 +66,14 @@ class CodeStoreController extends BaseController{
                 'size' => $size
             );
         }
+
         return array(
             'list' => $default_file_list
         );
     }
 
     public function fileInfo($get){
+        $uri = $get['f'];
         $f = self::$path.$get['f'];
         if(!is_file($f)){
             return array();
@@ -71,6 +84,7 @@ class CodeStoreController extends BaseController{
         $name = basename($f);
 
         return array(
+            'uri' => $uri,
             'type' => $type,
             'name' => $name,
             'content' => $current_file_info,

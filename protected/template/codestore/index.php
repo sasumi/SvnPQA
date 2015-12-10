@@ -38,64 +38,51 @@ include $this->resolveTemplate('inc/header.inc.php');
         </select>
     </div>
 
-    <div class="resizer-container">
-        <div class="file-explorer cus-scroll">
-            <div class="col-tree">
-                <ul class="tree-list">
-                    <?php echo show_tree($tree_list);?>
-                </ul>
+    <div class="store-warp cus-scroll">
+        <div class="col-tree">
+            <ul class="tree-list">
+                <?php echo show_tree($tree_list);?>
+            </ul>
+        </div>
+        <div class="col-file-list">
+            <div class="col-file-list-wrap">
+                <table class="data-tbl" data-empty-fill="1">
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
-            <div class="col-file-list">
-                <h3 class="caption">文件列表</h3>
-                <div class="col-file-list-wrap">
-                    <table class="data-tbl" data-empty-fill="1">
-                        <thead>
-                        <tr>
-                            <th style="width:150px;">文件</th>
-                            <th>版本号</th>
-                            <th>作者</th>
-                            <th style="width:60px;">大小</th>
-                            <th>最后修改时间</th>
-                            <th>是否锁定</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+        </div>
+
+        <div class="col-code-explorer">
+            <div class="col-file-content">
+                <h3 class="caption">
+                    <span class="f-uri-list">
+
+                    </span>
+                    <span class="f-name"></span>
+                </h3>
+                <div class="file-content">
+                    <pre class="prettyprint lang-php linenums=true"></pre>
                 </div>
             </div>
+
+            <div class="resizer resizer-h"></div>
             <div class="col-history">
                 <h3 class="caption">提交历史</h3>
                 <div class="col-history-wrap">
                     <table class="data-tbl" data-empty-fill="1">
                         <thead>
-                            <tr>
-                                <th style="width:60px;">版本</th>
-                                <th style="width:60px;">动作</th>
-                                <th style="width:100px;">作者</th>
-                                <th style="width:150px;">日期</th>
-                                <th>备注</th>
-                            </tr>
+                        <tr>
+                            <th style="width:60px;">版本</th>
+                            <th style="width:60px;">动作</th>
+                            <th style="width:100px;">作者</th>
+                            <th style="width:150px;">日期</th>
+                            <th>备注</th>
+                        </tr>
                         </thead>
                         <tbody>
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-        <div class="resizer resizer-h"></div>
-        <div class="code-explorer cus-scroll">
-            <div class="col-file-content">
-                <h3 class="caption"></h3>
-                <div class="file-content">
-                    <pre class="prettyprint lang-php linenums=true"><?php echo htmlspecialchars($current_file_info);?></pre>
-                </div>
-            </div>
-            <div class="col-comment">
-                <h3 class="caption">Comment</h3>
-                <div class="comment-list-warp">
-                    <ul class="comment-list"></ul>
                 </div>
             </div>
         </div>
@@ -117,20 +104,14 @@ include $this->resolveTemplate('inc/header.inc.php');
 var item = list[i];
 %>
 <tr>
-    <td>
-        <span data-<%if(item.is_folder){%>path<%}else{%>uri<%}%>="<%=item.uri%>">
+    <td style="width:220px">
+        <span data-<%if(item.is_folder){%>path<%}else{%>uri<%}%>="<%=item.uri%>" class="<%=(item.uri == CURRENT_URI && !item.is_folder ? FILE_ACT_CLS :'')%>">
         <span class="<%=item.css_class%>"></span>
             <%=item.name%>
         </span>
+        <span class="author-name">sasumi</span>
     </td>
-    <td>Revision</td>
-    <td>Autdor</td>
     <td><%=item.size%></td>
-    <td>Last Modify</td>
-    <td>Lock</td>
-    <td>
-        <a href="">Note</a>
-    </td>
 </tr>
 <%}%>
 </script>
@@ -149,9 +130,11 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
     var $tree = $('.tree-list');
     var $body = $('body');
     var TOG_CLS = 'tree-collapse';
-    var ACT_CLS = 'tree-active';
+    var TREE_ACT_CLS = 'tree-active';
+    var FILE_ACT_CLS = 'file-active';
     var $FILE_EXPLORER = $('.file-explorer');
     var $CODE_EXPLORER = $('.code-explorer');
+    var CURRENT_URI = '';
 
     var CGI_GET_FILES = '<?php echo $this->getUrl('CodeStore/fileList');?>';
     var CGI_GET_FILE_INFO = '<?php echo $this->getUrl('CodeStore/fileInfo');?>';
@@ -172,25 +155,44 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
             .replace(/&lt;/g, '<')
             .replace(/&gt;/g, '>')
             .replace(/&amp;/g, '&');
-    }
+    };
 
     var showDir = function(path){
         net.get(CGI_GET_FILES, {p:path}, function(rsp){
             if(rsp.code == 0){
+                rsp.data.CURRENT_URI = CURRENT_URI;
+                rsp.data.FILE_ACT_CLS = FILE_ACT_CLS;
                 $('.col-file-list tbody').html(tmpl($('#file-list-tpl').html(), rsp.data));
             }
         });
-        $tree.find('li').removeClass(ACT_CLS);
+        $tree.find('li').removeClass(TREE_ACT_CLS);
         $tree.find('label').each(function() {
             if ($(this).data('path') == path) {
-                $(this).parent().addClass(ACT_CLS);
+                $(this).parent().addClass(TREE_ACT_CLS);
                 $(this).parents('li').removeClass(TOG_CLS);
             }
         });
     };
 
+    var buildUriList = function(uri){
+        var s = uri.replace(/\/[^\/]+$/,'').split('/');
+        var html = '';
+        var u;
+        for(var i=0; i< s.length; i++){
+            var tmp = [];
+            for(var j=0; j<=i; j++){
+                tmp.push(s[j]);
+            }
+            u = tmp.join('/');
+            html += '<span '+(u ? 'data-path="'+u+'"' : '')+'>'+s[i]+'/</span>';
+        }
+        return html;
+    };
+
     var showCode = function(fileInfo){
-        $('.col-file-content caption').html(fileInfo.name);
+        var $cap = $('.col-file-content .caption');
+        $cap.find('.f-name').html(fileInfo.name);
+        $cap.find('.f-uri-list').html(buildUriList(fileInfo.uri));
         var html = '<pre class="prettyprint lang-'+fileInfo.type+' linenums=true">'+htmlEscape(fileInfo.content)+'</pre>';
         $('.file-content').html(html);
         prettyPrint();
@@ -220,7 +222,11 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
     });
 
     $body.delegate('[data-uri]', 'click', function(){
-        var f = $(this).data('uri');
+        var $this = $(this);
+        $('[data-uri]', $body).removeClass(FILE_ACT_CLS);
+        var f = $this.data('uri');
+        $this.addClass(FILE_ACT_CLS);
+        CURRENT_URI = f;
         showFile(f);
     });
 
@@ -228,8 +234,6 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
      * tree operation
      */
     (function(){
-
-
         $tree.delegate('.tree-toggle', 'click', function(e){
             var $p = $(this).parent();
             $p.toggleClass(TOG_CLS);
@@ -243,6 +247,7 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
      * resizer operation
      */
     (function(){
+        return;
         var RESIZE_EVENT = 'MY_RESIZE_EVENT:RS';
         var HEIGHT_RATIO = 0.35;
         var WIDTH_RATIO = 0.5;
