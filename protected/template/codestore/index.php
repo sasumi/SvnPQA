@@ -202,8 +202,18 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
 
     };
 
-    var showComments = function(fileInfo){
+    var addCommentMark = function(line, count){
+        var $flag = $('<span class="comment-flag"><i class="fa fa-comment-o"></i></span>');
+        $flag.prependTo($('.file-content .prettyprint .linenums>li').eq(line));
+    };
 
+    var showComments = function(fileInfo){
+        var comments = fileInfo.comments;
+        if(comments){
+            for(var line in comments){
+                addCommentMark(line, comments.length);
+            }
+        }
     };
 
     var showFile = function(uri){

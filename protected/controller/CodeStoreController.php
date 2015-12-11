@@ -88,6 +88,21 @@ class CodeStoreController extends BaseController{
             'type' => $type,
             'name' => $name,
             'content' => $current_file_info,
+            'comments' => self::getComments($uri)
+        );
+    }
+
+    private static function getComments($uri, $repo=''){
+        $cmt = array(
+            'author' => 'moon',
+            'time' => mktime(),
+            'content' => 'test comment',
+            'state' => 'xxasdfasd'
+        );
+
+        return array(
+            1 => array($cmt, $cmt),
+            10 => array($cmt)
         );
     }
 

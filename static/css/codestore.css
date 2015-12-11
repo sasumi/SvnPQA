@@ -8,10 +8,12 @@ html, body, #page {height:100%;}
 .resizer-container {flex:1}
 .store-warp {background:#fafafa; padding:10px; border-radius:3px; display:flex; flex-direction:row; flex:1}
 
-.file-content {padding:10px; overflow-y:scroll;}
+.file-content {padding:20px; overflow-y:scroll;}
 .file-content .prettyprint {border:none; font-family:"Source Code Pro","Courier New", serif;}
-.prettyprint ol.linenums li {display:list-item; list-style:decimal inside; color:#ccc;}
+.prettyprint ol.linenums li {display:list-item; position:relative; list-style:decimal inside; color:#ccc;}
 .prettyprint ol.linenums li:hover {background-color:#DEEFFF}
+.comment-flag {display:block; position:absolute; top:0; left:-20px;}
+.comment-flag:hover { cursor:pointer; color:black}
 
 body li.L1,
 body li.L3,
@@ -19,7 +21,7 @@ body li.L5,
 body li.L7,
 body li.L9 {background-color:#fafafa}
 
-.resizer {height:15px; overflow:hidden; cursor:s-resize; position:absolute; width:100%;}
+.resizer {height:15px; overflow:hidden; cursor:s-resize;}
 .resizer:before {content:"..."; display:block; text-align:center; font-size:24px; color:#ddd; margin:-12px auto 0 auto; text-shadow:1px 1px 1px white}
 .resizer:hover:before {color:gray;}
 
@@ -33,11 +35,11 @@ body li.L9 {background-color:#fafafa}
 .file-explorer .data-tbl caption {box-shadow:none;}
 
 .repository-select {padding:5px; background-color:white; border:1px solid #ddd; border-radius:3px;}
-.col-tree {padding-right:10px; border-right:1px solid #ddd; width:180px; overflow:scroll;}
-.col-file-list {padding:0 10px; border-left:1px solid #fff; width:300px;}
+.col-tree {flex:1; padding-right:10px; border-right:1px solid #ddd; width:180px; overflow:scroll;}
+.col-file-list {flex:1; padding:0 10px; border-left:1px solid #fff; width:300px;}
+.col-code-explorer {flex:4; padding:20px; background-color:white; box-shadow:1px 1px 6px #ccc;}
 .col-history {flex:2; margin-right:20px;}
 .code-explorer {display:flex; height:70%; background-color:white; overflow:hidden; border:1px solid #ddd; border-radius:3px; margin-top:10px;}
-.col-code-explorer {padding:20px; background-color:white; box-shadow:1px 1px 6px #ccc; flex:1}
 .col-file-content {}
 .col-comment {flex:1; padding:10px;}
 
