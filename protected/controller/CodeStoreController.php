@@ -41,6 +41,7 @@ class CodeStoreController extends BaseController{
     public function fileList($get){
         $p = self::$path.$get['p'];
         $default_file_list = array();
+        $repository_list = array();
 
         if($get['p'] != '/' && $get['p']){
             $default_file_list[] = array(
@@ -68,8 +69,13 @@ class CodeStoreController extends BaseController{
         }
 
         return array(
+            'repository_list' => $repository_list,
             'list' => $default_file_list
         );
+    }
+
+    public function repositoryConfig(){
+
     }
 
     public function fileInfo($get){

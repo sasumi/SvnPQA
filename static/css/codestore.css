@@ -1,4 +1,5 @@
 html, body, #page {height:100%;}
+body {overflow-y:scroll}
 #page {display:flex; flex-direction:column;}
 
 #header {border-bottom:none;}
@@ -6,7 +7,23 @@ html, body, #page {height:100%;}
 #col-aside {display:none}
 #col-main {position:relative; background:none; box-shadow:none; display:flex; padding:0; flex-direction:column;}
 .resizer-container {flex:1}
-.store-warp {background:#fafafa; padding:10px; border-radius:3px; display:flex; flex-direction:row; flex:1}
+.store-warp {background:#444; padding:10px; display:flex; flex-direction:row; flex:1}
+
+.repository-list {display:inline-block; position:relative;}
+.repository-list-cap { cursor:default;}
+.repository-list-cap:after {content:"\f107"; font-family:FontAwesome, serif; font-size:14px; color:gray; display:inline-block; margin:0 0 0 5px;}
+.repository-list:hover ul {display:block;}
+.repository-list ul {display:none; position:absolute; background-color:rgba(85, 85, 85, 0.9); margin:0 0 0 -10px; z-index:2;}
+.repository-list li {border-bottom:1px solid gray; padding:3px 30px 3px 10px;}
+.repository-list li:last-child {border:none;}
+.repository-list .edit {float:right; margin:-19px -20px 0 0; cursor:pointer;}
+.repository-list .edit:after {font-family:FontAwesome,serif; content:"\f085"; display:block; font-size:12px; color:gray;}
+.repository-list .edit:hover:after {color:#2e86cd}
+.repository-list label,
+.repository-list .add { cursor:pointer;}
+.repository-list label:hover,
+.repository-list .add:hover {color:#2e86cd}
+
 
 .file-content {padding:20px; overflow-y:scroll;}
 .file-content .prettyprint {border:none; font-family:"Source Code Pro","Courier New", serif;}
@@ -34,16 +51,20 @@ body li.L9 {background-color:#fafafa}
 .file-explorer .data-tbl .fa {margin:3px 0 0 0;}
 .file-explorer .data-tbl caption {box-shadow:none;}
 
-.repository-select {padding:5px; background-color:white; border:1px solid #ddd; border-radius:3px;}
-.col-tree {flex:1; padding-right:10px; border-right:1px solid #ddd; width:180px; overflow:scroll;}
-.col-file-list {flex:1; padding:0 10px; border-left:1px solid #fff; width:300px;}
-.col-code-explorer {flex:4; padding:20px; background-color:white; box-shadow:1px 1px 6px #ccc;}
+.repository-select {padding:5px; background-color:#555; color:#ccc;}
+.col-tree {flex:1; padding-right:10px; border-right:1px solid #333; width:180px; overflow:scroll;}
+.col-file-list {flex:1; padding:0 10px; border-left:1px solid #555; text-shadow:1px 1px 1px #1B1B1B; width:300px;}
+.col-code-explorer {flex:4; padding:20px; background-color:white; box-shadow:1px 1px 6px #000;}
 .col-history {flex:2; margin-right:20px;}
 .code-explorer {display:flex; height:70%; background-color:white; overflow:hidden; border:1px solid #ddd; border-radius:3px; margin-top:10px;}
 .col-file-content {}
 .col-comment {flex:1; padding:10px;}
 
-.author-name {color:#ccc}
+.author-name {color:#666}
+
+.col-file-list .data-tbl tr:nth-child(odd) {background:none;}
+.col-file-list .data-tbl {background:none; color:gray;}
+.col-file-list .data-tbl tr:hover td {background-color:#555;}
 
 .col-file-content .caption {clear:both; overflow:hidden;}
 .f-uri-list {float:left;}
@@ -51,16 +72,16 @@ body li.L9 {background-color:#fafafa}
 .f-name {float:left;}
 
 [data-uri],
-[data-path]{color:#444; cursor:pointer; white-space:nowrap; line-height:1;}
+[data-path]{color:#ccc; cursor:pointer; white-space:nowrap; line-height:1;}
 [data-path]:hover,
 [data-uri]:hover {color:#2e86cd}
 
-.tree-list {font-size:13px; background-color:#fafafa;}
+.tree-list {font-size:13px; color:#ccc; text-shadow:1px 1px 1px #1B1B1B}
 .tree-list ul {border-left:1px dotted gray;}
 .tree-list label {position:relative; padding-left:20px; margin-left:-10px;}
 .tree-list li {padding-left:15px; position: relative;}
 .file-active,
-.tree-list li.tree-active>label {font-weight:bold}
+.tree-list li.tree-active>label {font-weight:bold; color:#2e86cd}
 .tree-list .tree-toggle {cursor:pointer; display:block; position:absolute; width:12px; height:16px; overflow:hidden; margin:4px 0 0 -5px; z-index:1}
 .tree-list .tree-toggle:before {content:"\f147"; display:block; color:gray; font-family: FontAwesome, serif}
 .tree-list .tree-toggle:hover:before {color:black;}
@@ -69,4 +90,4 @@ body li.L9 {background-color:#fafafa}
 .tree-list .tree-has-children:after {width:8px;}
 .tree-list li:after {content:""; display:block; position:absolute; left:0; top:0; width:20px; height:13px; margin-left:-1px; border-bottom:1px dotted gray; border-left:1px dotted gray;}
 .tree-list>li:after {display:none;}
-.tree-list li:last-child {border-left:1px dotted #fafafa; margin-left:-1px}
+.tree-list li:last-child {border-left:1px dotted #444; margin-left:-1px}

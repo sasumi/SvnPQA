@@ -7,6 +7,7 @@ use function Lite\func\glob_recursive;
 use SvnPQA\ViewBase;
 
 $tree_list = $this->getData('tree_list');
+$repository_list = $this->getData('repository_list');
 
 function show_tree($list, $exp_dep=null){
     $exp_dep = isset($exp_dep) ? $exp_dep : 3;
@@ -33,9 +34,36 @@ include $this->resolveTemplate('inc/header.inc.php');
 <div id="col-main">
     <div class="repository-select">
         资源库：
-        <select name="" id="">
-            <option value="">http://svn.oa.com/Web/trunk</option>
-        </select>
+        <div class="repository-list">
+            <?php if(!$current_rep):?>
+            <a href="<?php echo $this->getUrl('CodeStore/addRep');?>" rel="popup">add repository</a>
+            <?php else:?>
+            <div class="repository-list-cap">
+                <?php if($current_rep){
+                    echo $current_rep;
+                } else {
+                    echo '';
+                }
+
+                ?>
+            </div>
+            <ul>
+                <?php foreach($repository_list ?: array() as $rep):?>
+                <li>
+                    <label for=""><?php echo $rep['host'];?></label>
+                    <span class="edit"></span>
+                </li>
+                <li>
+                    <label for="">http://svn.oa.com/Web/trunk</label>
+                    <span class="edit"></span>
+                </li>
+                <li>
+                    <span class="add">add</span>
+                </li>
+                <?php endforeach;?>
+            </ul>
+            <?php endif;?>
+        </div>
     </div>
 
     <div class="store-warp cus-scroll">
