@@ -18,7 +18,9 @@ $cdn_url = Config::get('app/cdn_url');
 	echo $this->getJs($cdn_url.'seajs/sea.js');
 	echo $this->getJs($cdn_url.'seajs/config.js');
 	echo $this->getJs($cdn_url.'ywj/component/imagescale.js');
-	echo $this->getJs('global.js');?>
+	echo $this->getJs('global.js');
+	echo $this->getCss('common.css');
+	?>
 	<script>
 		seajs.use('ywj/auto');
 	</script>

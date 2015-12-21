@@ -15,7 +15,7 @@ use function Lite\func\glob_recursive;
  */
 
 class CodeStoreController extends BaseController{
-    private static $path = 'd:/www/SvnPQA';
+    private static $path = 'C:/www/SvnPQA';
 
     public function index($get){
         $root_tag = 'root';
@@ -33,7 +33,14 @@ class CodeStoreController extends BaseController{
         }
         $tree_list = self::patch_path($tree_list, '');
 
+        $current_rep = 'http://svn.oa.com/Web/trunk';
+        $repository_list = array(
+            'http://svn.oa.com/'
+        );
+
         return array(
+            'repository_list' => $repository_list,
+            'current_rep' => $current_rep,
             'tree_list' => $tree_list,
         );
     }
@@ -74,7 +81,7 @@ class CodeStoreController extends BaseController{
         );
     }
 
-    public function repositoryConfig(){
+    public function addRep(){
 
     }
 

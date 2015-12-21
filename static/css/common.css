@@ -1,0 +1,12 @@
+body {background:#444}
+a {color:#87B5E8}
+.dashboard {background:none; color:#eee; text-shadow:1px 1px 1px #333}
+#header {border-bottom-color:#555}
+#col-main {box-shadow:0 0 3px #000}
+.calendar caption {padding-bottom:30px;}
+.calendar td {background-color:#545454; border-color:#444}
+.sub-nav {background-color:rgba(55, 65, 70, 0.77); box-shadow:2px 2px 4px #353535}
+.sub-nav dt span {background-color:#394145}
+.aside-nav dd a:hover, .aside-nav dd .active {background-color:rgba(209, 222, 255, 0.27)}
+.aside-nav dt {text-shadow:1px 1px 1px #333;}
+.PopupDialog {box-shadow:0 0 8px #636363}

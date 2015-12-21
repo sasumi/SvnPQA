@@ -19,13 +19,9 @@ return array(
 	)),
 	array('设置', 'department', array(
 		'设置' => array(
-			array('部门管理', 'department'),
-			array('用户管理', 'user'),
-			array('员工管理', 'employee'),
-			array('权限设置', 'access'),
-		),
-		'其他设置' => array(
-			array('参数设置', 'configuration'),
+			array('用户管理', 'User'),
+			array('用户组', 'UserGroup'),
+			array('权限设置', 'Access'),
 		),
 	)),
 );

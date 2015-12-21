@@ -1,14 +1,77 @@
 <?php
 namespace SvnPQA\controller;
 
-use Lite\Core\Config;
+use Captcha;
 use Lite\Component\Request;
+use Lite\Core\Config;
 use Lite\Core\Result;
+use SvnPQA\Auth;
+use SvnPQA\model\User;
 use function Lite\func\dump;
 
 class IndexController extends BaseController {
-	public function index(){
+	public function index($search){
+	}
 
+	public function login($get, $post) {
+		$access = Auth::instance();
+		$use_captcha = Config::get('app/login/use_captcha');
+
+		if($access->isLogin()){
+			$this->jumpTo('user');
+		}
+
+		if($post){
+			if($use_captcha){
+				if(empty($post['captcha'])){
+					return new Result('请输入验证码', false, 'captcha');
+				}
+				if(strtolower($post['captcha']) != strtolower(Auth::getCaptcha())){
+					Auth::setCaptcha('');
+					return new Result('您输入的验证码不正确，请重新输入', false, 'captcha');
+				}
+				Auth::setCaptcha('');
+			}
+
+			if(!User::find('name=?',$post['name'])->count()){
+				return new Result('当前用户名未登记');
+			}
+
+			$user_info = User::validatePsw($post['name'], $post['password']);
+			if($user_info){
+				if($post['auto_login']){
+					$access->setCookieExpired(Config::get('app/login/expired'));
+				} else {
+					$access->setCookieExpired(0);
+				}
+				Auth::instance()->login($user_info);
+				return new Result('登录成功', true, null, $this->getUrl());
+			}
+			return new Result('用户名或密码错误');
+		}
+
+		return array(
+			'use_captcha' => $use_captcha
+		);
+	}
+
+	public function logout() {
+		Auth::instance()->logout();
+		return new Result('退出成功', true, null, $this->getUrl('index/login'));
+	}
+
+	public function captcha(){
+		$cfg = Config::get('app/login/captcha');
+		$cap = new Captcha();
+		$cap->width  = $cfg['width'];
+		$cap->height = $cfg['height'];
+		$cap->maxWordLength = $cfg['words'];
+		$cap->minWordLength = $cfg['words'];
+		$cap->fontSize      = $cfg['font_size'];
+		$text = null;
+		$cap->CreateImage($text);
+		Auth::setCaptcha($text);
+		die;
 	}
 
 	public function uploadImage(){

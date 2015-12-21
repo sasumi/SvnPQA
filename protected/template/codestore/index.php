@@ -36,7 +36,7 @@ include $this->resolveTemplate('inc/header.inc.php');
         资源库：
         <div class="repository-list">
             <?php if(!$current_rep):?>
-            <a href="<?php echo $this->getUrl('CodeStore/addRep');?>" rel="popup">add repository</a>
+            <a href="<?php echo $this->getUrl('CodeStore/addRep');?>" rel="popup">添加</a>
             <?php else:?>
             <div class="repository-list-cap">
                 <?php if($current_rep){
@@ -44,23 +44,18 @@ include $this->resolveTemplate('inc/header.inc.php');
                 } else {
                     echo '';
                 }
-
                 ?>
             </div>
             <ul>
                 <?php foreach($repository_list ?: array() as $rep):?>
                 <li>
-                    <label for=""><?php echo $rep['host'];?></label>
+                    <label for=""><?php echo $rep;?></label>
                     <span class="edit"></span>
-                </li>
-                <li>
-                    <label for="">http://svn.oa.com/Web/trunk</label>
-                    <span class="edit"></span>
-                </li>
-                <li>
-                    <span class="add">add</span>
                 </li>
                 <?php endforeach;?>
+                <li>
+                    <a href="<?php echo $this->getUrl('CodeStore/addRep');?>" rel="popup">add</a>
+                </li>
             </ul>
             <?php endif;?>
         </div>
