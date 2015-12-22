@@ -10,7 +10,7 @@ use Lite\DB\Query as Query;
 /**
  * Class TableUser
 
- * @property-read int $id
+ * @property-read int $id 
  * @property int $user_group_id 用户组
  * @property string $name 用户名
  * @property string $password 密码

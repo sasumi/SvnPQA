@@ -25,7 +25,7 @@ class ViewBase extends View {
 		return $mnu->getMainMenu();
 	}
 
-	public function getSideMenu(){
+	public static function getSideMenu(){
 		$data = Config::get('nav');
 		$mnu = new MenuHelper($data, 'SvnPQA\Auth::checkUriAccess');
 		return $mnu->getSideMenu();
@@ -115,6 +115,7 @@ class ViewBase extends View {
 		switch($tag){
 			case 'input':
 				if($attributes['type'] == 'text' ||
+					$attributes['type'] == 'password' ||
 					$attributes['type'] == 'number'){
 					$class = 'txt';
 				}

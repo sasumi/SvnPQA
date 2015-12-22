@@ -8,32 +8,34 @@ use Lite\DB\Model as Model;
 use Lite\DB\Query as Query;
 
 /**
- * Class TableUserGroup
+ * Class TableRepository
 
  * @property-read int $id 
- * @property string $name 组名
- * @property mixed $description 描述
- * @property mixed $state 状态(禁用,启用)
- * @method static TableUserGroup|Query meta()
+ * @property mixed $address 地址
+ * @property string $user 用户名
+ * @property string $password 密码
+ * @property int $update_time 更新时间
+ * @property int $create_time 创建时间
+ * @method static TableRepository|Query meta()
  * @method boolean onBeforeSave()
  * @method boolean onBeforeUpdate()
  * @method boolean onBeforeInsert()
- * @method static string getDbTablePrefix($type = TableUserGroup::DB_READ)
- * @method static TableUserGroup|Query setQuery($query = null, $db_config = array())
+ * @method static string getDbTablePrefix($type = TableRepository::DB_READ)
+ * @method static TableRepository|Query setQuery($query = null, $db_config = array())
  * @method Query getQuery()
  * @method static \Exception transaction($handler)
  * @method \PDOStatement execute()
- * @method static TableUserGroup|Query find($statement = '', $var = null, ...$var2)
- * @method static TableUserGroup|Query order($statement='')
- * @method static TableUserGroup|Query|bool create($data)
- * @method static TableUserGroup|Query|array findOneByPk($val, $as_array = false)
- * @method static TableUserGroup|Query|array findByPks(array $pks, $as_array = false)
+ * @method static TableRepository|Query find($statement = '', $var = null, ...$var2)
+ * @method static TableRepository|Query order($statement='')
+ * @method static TableRepository|Query|bool create($data)
+ * @method static TableRepository|Query|array findOneByPk($val, $as_array = false)
+ * @method static TableRepository|Query|array findByPks(array $pks, $as_array = false)
  * @method static bool delByPk($val)
  * @method static bool updateByPk($val, $data)
  * @method static bool updateWhere(array $data, $limit = 1, $statement, ...$var2)
  * @method static bool deleteWhere($limit = 1, $statement, ...$var2)
  * @method array all($as_array = false)
- * @method TableUserGroup|Query|array|null one($as_array = false)
+ * @method TableRepository|Query|array|null one($as_array = false)
  * @method mixed|null ceil($key)
  * @method bool chunk($size = 1, $handler)
  * @method int count()
@@ -49,7 +51,7 @@ use Lite\DB\Query as Query;
  * @method array getAllPropertiesKey()
  * @method string getPrimaryKey()
  */
-abstract class TableUserGroup extends Model {
+abstract class TableRepository extends Model {
 	public function __construct($data=array()){
 		$this->setPropertiesDefine(array(
 			'id' => array(
@@ -59,28 +61,45 @@ abstract class TableUserGroup extends Model {
 				'primary' => true,
 				'required' => true,
 				'readonly' => true,
+				'min' => 0,
 				'entity' => true
 			),
-			'name' => array(
-				'alias' => '组名',
-				'type' => 'string',
-				'length' => 40,
-				'required' => true,
-				'entity' => true
-			),
-			'description' => array(
-				'alias' => '描述',
+			'address' => array(
+				'alias' => '地址',
 				'type' => 'text',
 				'length' => 0,
+				'required' => true,
 				'entity' => true
 			),
-			'state' => array(
-				'alias' => '状态',
-				'type' => 'enum',
-				'length' => 1,
+			'user' => array(
+				'alias' => '用户名',
+				'type' => 'string',
+				'length' => 50,
 				'required' => true,
-				'default' => 0,
-				'options' => array('0'=>'禁用', '1'=>'启用'),
+				'entity' => true
+			),
+			'password' => array(
+				'alias' => '密码',
+				'type' => 'string',
+				'length' => 50,
+				'required' => true,
+				'entity' => true
+			),
+			'update_time' => array(
+				'alias' => '更新时间',
+				'type' => 'timestamp',
+				'length' => 0,
+				'required' => true,
+				'readonly' => true,
+				'default' => '',
+				'entity' => true
+			),
+			'create_time' => array(
+				'alias' => '创建时间',
+				'type' => 'timestamp',
+				'length' => 0,
+				'required' => true,
+				'readonly' => true,
 				'entity' => true
 			),
 		));
@@ -92,7 +111,7 @@ abstract class TableUserGroup extends Model {
 	 * @return string
 	 */
 	public function getTableName() {
-		return 'user_group';
+		return 'repository';
 	}
 
 	/**
@@ -100,6 +119,6 @@ abstract class TableUserGroup extends Model {
 	* @return string
 	*/
 	public function getModelDesc(){
-		return '用户组';
+		return '资源库';
 	}
 }

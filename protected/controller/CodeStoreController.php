@@ -14,10 +14,10 @@ use function Lite\func\glob_recursive;
  * Time: 21:52
  */
 
-class CodeStoreController extends BaseController{
+class CodeStoreController extends BaseController {
     private static $path = 'C:/www/SvnPQA';
 
-    public function index($get){
+    public function codeReview($get){
         $root_tag = 'root';
         $files = glob_recursive(self::$path.'/*', GLOB_ONLYDIR);
 
