@@ -10,13 +10,11 @@ use SvnPQA\ViewBase;
 /**
  * @var ViewBase $this
  */
-$repository_list = $this->getData('repository_list');
-$repo_list = $this->getData('repo_list');
+$repo_list = $this->getData('data_list');
 include $this->resolveTemplate('inc/header.inc.php');
 ?>
 <div id="col-aside"><?php echo ViewBase::getSideMenu()?></div>
 <div id="col-main">
-
     <div class="operate-bar">
         <a href="<?php echo $this->getUrl('Repository/update');?>" rel="popup" class="btn">添加</a>
     </div>
@@ -33,6 +31,7 @@ include $this->resolveTemplate('inc/header.inc.php');
                 break;
             }
             ?>
+            <th>状态</th>
             <th style="width:80px;">操作</th>
         </thead>
         <tbody>
@@ -42,6 +41,9 @@ include $this->resolveTemplate('inc/header.inc.php');
             <tr>
                 <?php $this->walkDisplayProperties(function($alias, $value){echo "<td>$value</td>";}, $repo);?>
                 <td>
+                    <a href="<?php echo $this->getUrl('Repository/load', array('id'=>$repo->id));?>" rel="load-repo">加载</a>
+                </td>
+                <td>
                     <a href="<?php echo $this->getUrl('Repository/update', array('id'=>$repo->id));?>" rel="popup">编辑</a>
                     <a href="<?php echo $this->getUrl('Repository/delete', array('id'=>$repo->id));?>">删除</a>
                 </td>
@@ -49,7 +51,18 @@ include $this->resolveTemplate('inc/header.inc.php');
         <?php endforeach;?>
         </tbody>
     </table>
-
     <?php echo $paginate;?>
 </div>
+    <script>
+        seajs.use(['jquery', 'ywj/net'], function($, net){
+            $('[rel=load-repo]').click(function(){
+                var $this = $(this);
+                $this.parent().html('处理中...');
+                net.get($this.attr('href'), null, function(rsp){
+                    $this.parent().html(rsp.message);
+                });
+                return false;
+            });
+        });
+    </script>
 <?php include $this->resolveTemplate('inc/footer.inc.php');?>

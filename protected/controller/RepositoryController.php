@@ -1,6 +1,7 @@
 <?php
 namespace SvnPQA\controller;
 use Lite\Component\Paginate;
+use Lite\Core\Config;
 use Lite\CRUD\ControllerInterface;
 use function Lite\func\array_last;
 use function Lite\func\array_merge_recursive_distinct;
@@ -9,6 +10,7 @@ use function Lite\func\format_size;
 use function Lite\func\get_folder_size;
 use function Lite\func\glob_recursive;
 use SvnPQA\model\Repository;
+use SvnPQA\SvnHelper;
 
 /**
  * Created by PhpStorm.
@@ -28,6 +30,20 @@ class RepositoryController extends BaseController implements ControllerInterface
             self::OP_UPDATE => array(),
             self::OP_DELETE => array()
         );
+    }
+
+    public function load($get){
+        $id = $get['id'];
+        $repo = Repository::findOneByPk($id);
+        if($repo){
+            $tmp_dir = Config::get('code/tmp_dir');
+            $dir_name = md5($repo->address);
+            if(!is_dir($tmp_dir.'/'.$dir_name)){
+                mkdir($tmp_dir.'/'.$dir_name);
+            }
+            $s = new SvnHelper($repo->address, $repo->user, $repo->password);
+            $s->checkOut($tmp_dir.'/'.$dir_name);
+        }
     }
 
     /**
