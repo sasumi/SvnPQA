@@ -43,6 +43,7 @@ class RepositoryController extends BaseController implements ControllerInterface
             }
             $s = new SvnHelper($repo->address, $repo->user, $repo->password);
             $s->checkOut($tmp_dir.'/'.$dir_name);
+            return $this->getCommonResult(true);
         }
     }
 

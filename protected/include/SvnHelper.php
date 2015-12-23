@@ -1,5 +1,7 @@
 <?php
 namespace SvnPQA;
+use Lite\Component\Client;
+use Lite\Component\Server;
 use function Lite\func\dump;
 
 /**
@@ -26,21 +28,18 @@ class SvnHelper {
         $this->svn_cmd = $cmd;
     }
 
-    public function checkOut($dir){
-        $param = array($this->address, $dir);
-        $ret = $this->exec('checkout', $param);
-
-        return $this->parserResult($ret);
+    public function update($dir){
+        return $this->exec('checkout', array($this->address, $dir));
     }
 
-    private function parserResult($str){
-        return '';
+    public function checkOut($dir){
+        return $this->exec('checkout', array($this->address, $dir));
     }
 
     public function exec($cmd, $param=array()){
         $param_str = '';
         $param_str .= $this->user ? " --username {$this->user}" : '';
-        $param_str .= $this->password ? "--password {$this->password}" : '';
+        $param_str .= $this->password ? " --password {$this->password}" : '';
         $param_str .= $this->no_auth_cache ? ' --no-auth-cache' : '';
 
         foreach($param as $k=>$v){
@@ -50,13 +49,11 @@ class SvnHelper {
                 $param_str .= " --$k $v";
             }
         }
-
-        dump($param_str, 1);
-
         $command_lines = "{$this->svn_cmd} $cmd $param_str";
         $ret = shell_exec($command_lines);
-        dump($ret, 1);
-
-        return '';
+        if(Server::inWindows()){
+            $ret = mb_convert_encoding($ret, 'utf-8', 'gb2312');
+        }
+        return $ret;
     }
 }

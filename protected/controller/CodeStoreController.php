@@ -1,11 +1,14 @@
 <?php
 namespace SvnPQA\controller;
+use Lite\Core\Config;
+use Lite\Core\Result;
 use function Lite\func\array_last;
 use function Lite\func\array_merge_recursive_distinct;
 use function Lite\func\dump;
 use function Lite\func\format_size;
 use function Lite\func\get_folder_size;
 use function Lite\func\glob_recursive;
+use SvnPQA\model\Repository;
 
 /**
  * Created by PhpStorm.
@@ -15,38 +18,46 @@ use function Lite\func\glob_recursive;
  */
 
 class CodeStoreController extends BaseController {
-    private static $path = 'C:/www/SvnPQA';
-
     public function codeReview($get){
-        $root_tag = 'root';
-        $files = glob_recursive(self::$path.'/*', GLOB_ONLYDIR);
+        $repository_list = Repository::find()->all();
+        $repo_id = $get['id'] ?: $repository_list[0]->id;
 
-        foreach ($files as $k => $f) {
-            $f = str_replace('\\', '/', $f);
-            $f = str_ireplace(self::$path, '', $f);
-            $f = $root_tag . $f;
-            $files[$k] = self::convert_path_to_array($f, true);
+        if($repo_id){
+            $current_rep = Repository::findOneByPk($repo_id);
+            $root_tag = 'root';
+            $path = $this->getPath($current_rep);
+            $files = glob_recursive($path.'/*', GLOB_ONLYDIR);
+
+            foreach ($files as $k => $f) {
+                $f = str_replace('\\', '/', $f);
+                $f = str_ireplace($path, '', $f);
+                $f = $root_tag . $f;
+                $files[$k] = self::convert_path_to_array($f, true);
+            }
+            $tree_list = array();
+            foreach ($files as $dir) {
+                $tree_list = array_merge_recursive_distinct($tree_list, $dir);
+            }
+            $tree_list = self::patch_path($tree_list, '');
+
+            return array(
+                'repository_list' => $repository_list,
+                'current_rep' => $current_rep,
+                'tree_list' => $tree_list,
+            );
         }
-        $tree_list = array();
-        foreach ($files as $dir) {
-            $tree_list = array_merge_recursive_distinct($tree_list, $dir);
-        }
-        $tree_list = self::patch_path($tree_list, '');
+        return new Result('empty repository');
+    }
 
-        $current_rep = 'http://svn.oa.com/Web/trunk';
-        $repository_list = array(
-            'http://svn.oa.com/'
-        );
-
-        return array(
-            'repository_list' => $repository_list,
-            'current_rep' => $current_rep,
-            'tree_list' => $tree_list,
-        );
+    private function getPath($repo){
+        return str_replace('\\','/',Config::get('code/tmp_dir')).'/'.md5($repo->address);
     }
 
     public function fileList($get){
-        $p = self::$path.$get['p'];
+        $repo = Repository::findOneByPk($get['id']);
+        $path = $this->getPath($repo);
+
+        $p = $path.$get['p'];
         $default_file_list = array();
         $repository_list = array();
 
@@ -67,7 +78,7 @@ class CodeStoreController extends BaseController {
             $f = str_replace('\\', '/', $f);
 
             $default_file_list[] = array(
-                'uri' => str_replace(self::$path, '', $f),
+                'uri' => str_replace($path, '', $f),
                 'name' => array_last(explode('/',$f)),
                 'css_class' => self::getTypeCssClass($f, $is_dir),
                 'is_folder' => $is_dir,
@@ -81,18 +92,17 @@ class CodeStoreController extends BaseController {
         );
     }
 
-    public function addRep(){
-
-    }
-
     public function fileInfo($get){
         $uri = $get['f'];
-        $f = self::$path.$get['f'];
+        $repo = Repository::findOneByPk($get['id']);
+        $path = $this->getPath($repo);
+
+        $f = $path.$get['f'];
         if(!is_file($f)){
             return array();
         }
 
-        $current_file_info = file_get_contents($f);
+        $content = file_get_contents($f);
         $type = array_last(explode('.', $f));
         $name = basename($f);
 
@@ -100,9 +110,14 @@ class CodeStoreController extends BaseController {
             'uri' => $uri,
             'type' => $type,
             'name' => $name,
-            'content' => $current_file_info,
+            'is_image' => self::isImage($type),
+            'content' => !self::isImage($type) ? $content : base64_encode($content),
             'comments' => self::getComments($uri)
         );
+    }
+
+    private static function isImage($file_type){
+        return in_array($file_type, array('jpg', 'png', 'gif', 'ico'));
     }
 
     private static function getComments($uri, $repo=''){
@@ -178,5 +193,43 @@ class CodeStoreController extends BaseController {
             $ret[$k][$ps[0]] = $bind_data;
         }
         return $ret;
+    }
+}
+
+if (!function_exists('is_binary')) {
+    /**
+     * Determine if a file is binary. Useful for doing file content
+     * editing
+     *
+     * @access public
+     * @param mixed $link Complete path to file (/path/to/file)
+     * @return boolean
+     * @link http://us3.php.net/filesystem#30152
+     * @see link user notes regarding this created function
+     */
+    function is_binary($link){
+        $fp = @fopen($link, 'rb');
+        $tmpStr = @fread($fp, 256);
+        @fclose($fp);
+
+        if ($tmpStr) {
+            $tmpStr = str_replace(chr(10), '', $tmpStr);
+            $tmpStr = str_replace(chr(13), '', $tmpStr);
+
+            $tmpInt = 0;
+
+            for ($i = 0; $i < strlen($tmpStr); $i++) {
+                if (extension_loaded('ctype')) {
+                    if (!ctype_print($tmpStr[$i])) $tmpInt++;
+                } elseif (!eregi("[[:print:]]+", $tmpStr[$i])) {
+                    $tmpInt++;
+                }
+            }
+
+            if ($tmpInt > 5) return false;
+            else return true;
+        } else {
+            return false;
+        }
     }
 }

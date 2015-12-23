@@ -57,9 +57,10 @@ include $this->resolveTemplate('inc/header.inc.php');
         seajs.use(['jquery', 'ywj/net'], function($, net){
             $('[rel=load-repo]').click(function(){
                 var $this = $(this);
+                var $p = $this.parent();
                 $this.parent().html('处理中...');
                 net.get($this.attr('href'), null, function(rsp){
-                    $this.parent().html(rsp.message);
+                    $p.html(rsp.message);
                 });
                 return false;
             });

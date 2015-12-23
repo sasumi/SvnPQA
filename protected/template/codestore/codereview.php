@@ -32,43 +32,25 @@ include $this->resolveTemplate('inc/header.inc.php');
 ?>
 <div id="col-aside"><?php echo ViewBase::getSideMenu()?></div>
 <div id="col-main">
-    <div class="repository-select">
+    <form class="repository-select" action="<?php echo $this->getUrl('CodeStore/codeReview');?>" method="get">
         资源库：
-        <div class="repository-list">
-            <?php if(!$current_rep):?>
-            <a href="<?php echo $this->getUrl('CodeStore/addRep');?>" rel="popup">添加</a>
-            <?php else:?>
-            <div class="repository-list-cap">
-                <?php if($current_rep){
-                    echo $current_rep;
-                } else {
-                    echo '';
-                }
-                ?>
-            </div>
-            <ul>
-                <?php foreach($repository_list ?: array() as $rep):?>
-                <li>
-                    <label for=""><?php echo $rep;?></label>
-                    <span class="edit"></span>
-                </li>
-                <?php endforeach;?>
-                <li>
-                    <a href="<?php echo $this->getUrl('CodeStore/addRep');?>" rel="popup">add</a>
-                </li>
-            </ul>
-            <?php endif;?>
-        </div>
-    </div>
+        <select name="id" onchange="if(this.value){this.parentNode.submit();}">
+            <?php foreach($repository_list ?: array() as $rep):?>
+            <option value="<?php echo $rep->id;?>" <?php echo $current_rep->id == $rep->id ? 'selected':'';?>>
+                <?php echo $rep->address;?>
+            </option>
+            <?php endforeach;?>
+        </select>
+    </form>
 
     <div class="store-warp cus-scroll">
-        <div class="col-tree">
-            <ul class="tree-list">
-                <?php echo show_tree($tree_list);?>
-            </ul>
-        </div>
-        <div class="col-file-list">
-            <div class="col-file-list-wrap">
+        <div class="col-file-explorer">
+            <div class="col-tree">
+                <ul class="tree-list">
+                    <?php echo show_tree($tree_list);?>
+                </ul>
+            </div>
+            <div class="col-file-list">
                 <table class="data-tbl" data-empty-fill="1">
                     <tbody>
                     </tbody>
@@ -88,7 +70,6 @@ include $this->resolveTemplate('inc/header.inc.php');
                     <pre class="prettyprint lang-php linenums=true"></pre>
                 </div>
             </div>
-
             <div class="resizer resizer-h"></div>
             <div class="col-history">
                 <h3 class="caption">提交历史</h3>
@@ -127,14 +108,13 @@ include $this->resolveTemplate('inc/header.inc.php');
 var item = list[i];
 %>
 <tr>
-    <td style="width:220px">
+    <td>
         <span data-<%if(item.is_folder){%>path<%}else{%>uri<%}%>="<%=item.uri%>" class="<%=(item.uri == CURRENT_URI && !item.is_folder ? FILE_ACT_CLS :'')%>">
         <span class="<%=item.css_class%>"></span>
             <%=item.name%>
         </span>
-        <span class="author-name">sasumi</span>
     </td>
-    <td><%=item.size%></td>
+    <td style="width:40px;"><%=item.size%></td>
 </tr>
 <%}%>
 </script>
@@ -158,6 +138,7 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
     var $FILE_EXPLORER = $('.file-explorer');
     var $CODE_EXPLORER = $('.code-explorer');
     var CURRENT_URI = '';
+    var CURRENT_REPO_ID = '<?php echo $current_rep->id;?>';
 
     var CGI_GET_FILES = '<?php echo $this->getUrl('CodeStore/fileList');?>';
     var CGI_GET_FILE_INFO = '<?php echo $this->getUrl('CodeStore/fileInfo');?>';
@@ -181,7 +162,7 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
     };
 
     var showDir = function(path){
-        net.get(CGI_GET_FILES, {p:path}, function(rsp){
+        net.get(CGI_GET_FILES, {p:path, id:CURRENT_REPO_ID}, function(rsp){
             if(rsp.code == 0){
                 rsp.data.CURRENT_URI = CURRENT_URI;
                 rsp.data.FILE_ACT_CLS = FILE_ACT_CLS;
@@ -212,11 +193,17 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
         return html;
     };
 
+
     var showCode = function(fileInfo){
         var $cap = $('.col-file-content .caption');
         $cap.find('.f-name').html(fileInfo.name);
         $cap.find('.f-uri-list').html(buildUriList(fileInfo.uri));
-        var html = '<pre class="prettyprint lang-'+fileInfo.type+' linenums=true">'+htmlEscape(fileInfo.content)+'</pre>';
+        var html = '';
+        if(!fileInfo.is_image){
+            html = '<pre class="prettyprint lang-'+fileInfo.type+' linenums=true">'+htmlEscape(fileInfo.content)+'</pre>';
+        } else {
+            html ='<img src="data:image/png;base64,'+fileInfo.content+'"/>';
+        }
         $('.file-content').html(html);
         prettyPrint();
     };
@@ -240,7 +227,7 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
     };
 
     var showFile = function(uri){
-        net.get(CGI_GET_FILE_INFO, {f:uri}, function(rsp){
+        net.get(CGI_GET_FILE_INFO, {f:uri, id:CURRENT_REPO_ID}, function(rsp){
             if(rsp.code == 0){
                 showCode(rsp.data);
                 showHistories(rsp.data);
@@ -305,7 +292,6 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
 
         $FILE_EXPLORER.on(RESIZE_EVENT,function(){
             var h = $(this).height();
-            $('.col-file-list-wrap').height(h-40);
             $('.col-history-wrap').height(h-40);
         });
 
