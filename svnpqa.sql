@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 22, 2015 at 06:15 PM
+-- Generation Time: Feb 17, 2016 at 06:40 PM
 -- Server version: 5.6.21-log
 -- PHP Version: 5.6.11
 
@@ -59,7 +59,8 @@ CREATE TABLE `repository` (
 --
 
 INSERT INTO `repository` (`id`, `address`, `user`, `password`, `update_time`, `create_time`) VALUES
-(2, 'http://svn.oa.com/Web/trunk', 'sasumi', 'sasumi123456', '2015-12-22 01:50:42', '2015-12-22 01:50:33');
+(2, 'http://182.92.176.187/svn/chinaerp/trunk/www', 'sasumi', '123456', '2015-12-23 02:20:30', '2015-12-22 01:50:33'),
+(3, 'http://182.92.176.187/svn/chinaerp/trunk/frontend', 'sasumi', '123456', '2015-12-23 02:20:30', '2015-12-22 01:50:33');
 
 -- --------------------------------------------------------
 
@@ -176,7 +177,7 @@ ALTER TABLE `access_action`
 -- AUTO_INCREMENT for table `repository`
 --
 ALTER TABLE `repository`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `user`
 --
