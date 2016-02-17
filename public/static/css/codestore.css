@@ -9,7 +9,7 @@ body {overflow-y:scroll}
 .resizer-container {flex:1}
 .store-warp {background:#444; padding:10px; display:flex; flex-direction:row; flex:1}
 
-.file-content {padding:20px; overflow-y:scroll;}
+.file-content {padding:20px; overflow-y:scroll; display:flex;}
 .file-content .prettyprint {border:none; font-family:"Source Code Pro","Courier New", serif;}
 .file-content img {box-shadow: 1px 1px 10px #B3B3B3}
 

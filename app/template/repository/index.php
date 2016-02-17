@@ -17,11 +17,10 @@ include $this->resolveTemplate('inc/header.inc.php');
 <div id="col-aside"><?php echo ViewBase::getSideMenu()?></div>
 <div id="col-main">
     <div class="operate-bar">
-        <a href="<?php echo $this->getUrl('Repository/update');?>" rel="popup" class="btn">添加</a>
+        <a href="<?php echo $this->getUrl('Repository/update');?>" rel="popup" class="btn">Add Repository</a>
     </div>
-
     <table class="data-tbl">
-        <caption>代码仓库</caption>
+        <caption>Code Repository</caption>
         <thead>
             <?php
             /** @var Repository $repo */
@@ -32,8 +31,8 @@ include $this->resolveTemplate('inc/header.inc.php');
                 break;
             }
             ?>
-            <th>状态</th>
-            <th style="width:80px;">操作</th>
+            <th>State</th>
+            <th style="width:120px;">Op.</th>
         </thead>
         <tbody>
         <?php
@@ -42,11 +41,11 @@ include $this->resolveTemplate('inc/header.inc.php');
             <tr>
                 <?php $this->walkDisplayProperties(function($alias, $value){echo "<td>$value</td>";}, $repo);?>
                 <td>
-                    <a href="<?php echo $this->getUrl('Repository/load', array('id'=>$repo->id));?>" rel="load-repo">加载</a>
+                    <a href="<?php echo $this->getUrl('Repository/load', array('id'=>$repo->id));?>" rel="load-repo">Load</a>
                 </td>
                 <td>
-                    <a href="<?php echo $this->getUrl('Repository/update', array('id'=>$repo->id));?>" rel="popup">编辑</a>
-                    <a href="<?php echo $this->getUrl('Repository/delete', array('id'=>$repo->id));?>">删除</a>
+                    <a href="<?php echo $this->getUrl('Repository/update', array('id'=>$repo->id));?>" rel="popup">Update</a>
+                    <a href="<?php echo $this->getUrl('Repository/delete', array('id'=>$repo->id));?>">Delete</a>
                 </td>
             </tr>
         <?php endforeach;?>

@@ -1,6 +1,6 @@
 <?php
 use Lite\Core\Config;
-use Lite\Core\CRUD\ModelInterface;
+use Lite\CRUD\ModelInterface;
 use Lite\DB\Model;
 use function Lite\func\dump;
 use function Lite\func\h;
@@ -28,7 +28,7 @@ $update_fields = $this->getData('update_fields');
 		<?php endforeach;?>
 
 		<table class="frm-tbl">
-			<caption><?php echo $model_instance->$pk? '更新' : '新增'?><?php echo $model_instance->getModelDesc();?></caption>
+			<caption><?php echo $model_instance->$pk? 'Update' : 'Save'?><?php echo $model_instance->getModelDesc();?></caption>
 			<tbody>
 				<?php foreach($update_fields as $field=>$alias):?>
 				<tr>
@@ -54,7 +54,7 @@ $update_fields = $this->getData('update_fields');
 				<tr>
 					<td></td>
 					<td class="col-action">
-						<input type="submit" value="<?php echo $model_instance->$pk? '保存修改' : '新增'?>" class="btn" />
+						<input type="submit" value="Save" class="btn" />
 					</td>
 				</tr>
 			</tbody>

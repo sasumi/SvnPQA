@@ -7,5 +7,5 @@
  */
 use Lite\Core\Config;
 return array(
-    'tmp_dir' => Config::get('app/path').'tmp'
+    'tmp_dir' => Config::get('app/root').'tmp'
 );

@@ -1,0 +1,12 @@
+.search-frm {padding:5px 10px}
+body .PopupDialog {border-bottom:3px solid #77C6CC}
+
+#container { position:relative;}
+.content-fix-width { max-width:1000px;}
+[rel=quick-update-block] {display:inline-block; cursor:pointer;}
+[rel=quick-update-block]:after { font-family:"FontAwesome", serif; content:"\f040"; color:#ccc}
+[rel=quick-update-block]:hover:after {color:gray;}
+
+.state-changer {}
+.g-img-error {background:url("../img/default_image.png") center no-repeat; background-size:contain;}
+.g-img-error img { visibility:hidden;}

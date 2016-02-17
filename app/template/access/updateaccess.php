@@ -5,7 +5,7 @@ include $this->resolveTemplate('inc/header.inc.php') ?>
 <div id="col-main">
     <form action="<?= $this->getUrl('access/updateAccess', array('id'=>$action_info->id)); ?>" class="frm" rel="async"  method="post">
         <table class="frm-tbl">
-	        <caption>编辑</caption>
+	        <caption>Update</caption>
             <tbody>
 	            <tr>
 	                <td class="col-label">URI</td>

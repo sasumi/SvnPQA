@@ -1,28 +1,28 @@
 <?php
 return array(
-	array('首页', 'index'),
-	array('代码仓库', 'Repository/index', array(
-		'代码库' => array(
-			array('代码库', 'Repository/index'),
-			array('代码审阅', 'CodeStore/codeReview'),
-			array('提交历史', 'CodeStore/history'),
+	array('Home', 'index'),
+	array('Repository', 'Repository/index', array(
+		'Repository' => array(
+			array('Code Store', 'Repository/index'),
+			array('Code Review', 'CodeStore/codeReview'),
+			array('Commit History', 'CodeStore/history'),
 		),
 	)),
-	array('统计分析', 'CodeStore', array(
-		'开发统计' => array(
-			array('开发统计', 'articlecategory'),
+	array('Statistics', 'CodeStore', array(
+		'Dev Statistics' => array(
+			array('Dev Statistics', 'CodeStore/statistics'),
 		),
 	)),
-	array('报告', 'Report', array(
-		'开发统计' => array(
-			array('开发统计', 'articlecategory'),
+	array('Report', 'Report', array(
+		'Report' => array(
+			array('Report', 'Report'),
 		),
 	)),
-	array('设置', 'User/index', array(
-		'设置' => array(
-			array('用户管理', 'User'),
-			array('用户组', 'UserGroup'),
-			array('权限设置', 'Access'),
+	array('Setting', 'User/index', array(
+		'Setting' => array(
+			array('User', 'User'),
+			array('User Group', 'UserGroup'),
+			array('Access', 'Access'),
 		),
 	)),
 );

@@ -34,7 +34,7 @@ include $this->resolveTemplate('inc/header.inc.php');
 <div id="col-aside"><?php echo ViewBase::getSideMenu()?></div>
 <div id="col-main">
     <form class="repository-select" action="<?php echo $this->getUrl('CodeStore/codeReview');?>" method="get">
-        资源库：
+        Repository：
         <select name="id" onchange="if(this.value){this.parentNode.submit();}">
             <?php foreach($repository_list ?: array() as $rep):?>
             <option value="<?php echo $rep->id;?>" <?php echo $current_rep->id == $rep->id ? 'selected':'';?>>
@@ -62,26 +62,29 @@ include $this->resolveTemplate('inc/header.inc.php');
         <div class="col-code-explorer">
             <div class="col-file-content">
                 <h3 class="caption">
-                    <span class="f-uri-list">
-
-                    </span>
+                    <span class="f-uri-list"></span>
                     <span class="f-name"></span>
                 </h3>
                 <div class="file-content">
                     <pre class="prettyprint lang-php linenums=true"></pre>
+                    <div class="comments">
+                        <ul>
+                            <li>asdfasdf</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="resizer resizer-h"></div>
             <div class="col-history">
-                <h3 class="caption">提交历史</h3>
+                <h3 class="caption">Commit History</h3>
                 <div class="col-history-wrap">
                     <table class="data-tbl" data-empty-fill="1">
                         <thead>
                         <tr>
-                            <th style="width:60px;">版本</th>
-                            <th style="width:60px;">动作</th>
-                            <th style="width:100px;">作者</th>
-                            <th style="width:150px;">日期</th>
+                            <th style="width:60px;">Version</th>
+                            <th style="width:60px;">Action</th>
+                            <th style="width:100px;">Author</th>
+                            <th style="width:150px;">Date</th>
                             <th>备注</th>
                         </tr>
                         </thead>
@@ -205,7 +208,7 @@ seajs.use(['jquery', 'ywj/net', 'ywj/tmpl', 'jquery/cookie'], function($, net, t
         } else {
             html ='<img src="data:image/png;base64,'+fileInfo.content+'"/>';
         }
-        $('.file-content').html(html);
+        $('.file-content pre').html(html);
         prettyPrint();
     };
 

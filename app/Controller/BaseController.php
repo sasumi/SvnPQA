@@ -4,10 +4,9 @@ use Lite\Core\Hooker;
 use Lite\CRUD\AbstractController;
 use Lite\DB\Query;
 use Lite\DB\Record;
-use function Lite\func\dump;
 use Lite\Logger\Logger;
 use Lite\Logger\Message\CommonMessage;
-use SvnPQA\ViewBase;
+use function Lite\func\dump;
 
 abstract class BaseController extends AbstractController {
 	public function __construct($ctrl=null, $act=null){
@@ -27,14 +26,14 @@ abstract class BaseController extends AbstractController {
      * @return string
      */
     public static function __getTemplate($ctrl, $act){
-        $class = get_called_class();
-        $interfaces = class_implements($class, true);
-        if($interfaces['Lite\CRUD\ControllerInterface']){
-            $f = parent::__getTemplate('crud', $act);
-            if($f){
-                return $f;
+        $f = parent::__getTemplate($ctrl, $act);
+        if(!is_file($f)){
+            $class = get_called_class();
+            $interfaces = class_implements($class, true);
+            if($interfaces['Lite\CRUD\ControllerInterface']){
+                $f = parent::__getTemplate('crud', $act);
             }
         }
-        return parent::__getTemplate($ctrl, $act);
+        return $f;
     }
 }

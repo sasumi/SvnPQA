@@ -1,6 +1,0 @@
-#page {display:block;}
-#welcome, #main-nav {display:none}
-#container {box-shadow:none}
-#login-frm {margin:0 auto; background-color:rgba(255, 255, 255, 0.59); border:1px solid #ccc; box-shadow:1px 1px 8px #DADADA}
-.page-iframe #login-frm {border:none; box-shadow:none; width:auto; margin:0;}
-body {background:url("../img/body-bg.png")}

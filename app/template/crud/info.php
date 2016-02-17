@@ -1,7 +1,7 @@
 <?php
 use Lite\Core\Router;
-use Lite\Core\CRUD\ControllerInterface;
-use Lite\Core\CRUD\ModelInterface;
+use Lite\CRUD\ControllerInterface;
+use Lite\CRUD\ModelInterface;
 use Lite\DB\Model;
 use function Lite\func\dump;
 use function Lite\func\h;
@@ -18,7 +18,7 @@ $display_fields = $this->getData('display_fields');
 </div>
 <div id="col-main">
 	<table class="frm-tbl">
-		<caption><?php echo $model_instance->getModelDesc();?>信息</caption>
+		<caption><?php echo $model_instance->getModelDesc();?></caption>
 		<tbody>
 			<?php
 			foreach($display_fields as $field=>$alias):
@@ -52,11 +52,11 @@ $display_fields = $this->getData('display_fields');
 				<td></td>
 				<td class="col-action">
 					<?php if(in_array(ControllerInterface::OP_UPDATE, $operation_list)):?>
-					<a href="<?php echo $this->getUrl($this->getController().'/update', array($pk=>$model_instance->$pk, 'ref'=>Router::get('ref')));?>" class="btn">修改</a>
+					<a href="<?php echo $this->getUrl($this->getController().'/update', array($pk=>$model_instance->$pk, 'ref'=>Router::get('ref')));?>" class="btn">Update</a>
 					<?php endif;?>
 
 					<?php if(in_array(ControllerInterface::OP_DELETE, $operation_list)):?>
-					<a href="<?php echo $this->getUrl($this->getController().'/delete', array($pk=>$model_instance->$pk));?>" rel="async" class="btn btn-danger">删除</a>
+					<a href="<?php echo $this->getUrl($this->getController().'/delete', array($pk=>$model_instance->$pk));?>" rel="async" class="btn btn-danger">Delete</a>
 					<?php endif;?>
 				</td>
 			</tr>

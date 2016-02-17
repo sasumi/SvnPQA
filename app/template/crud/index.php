@@ -24,7 +24,7 @@ include $this->resolveTemplate('inc/header.inc.php');
 <div id="col-main">
 	<?php if(in_array(ControllerInterface::OP_UPDATE, $this->getData('operation_list'))):?>
 	<div class="operate-bar">
-		<a href="<?php echo $this->getUrl($this->getController().'/update');?>" class="btn" rel="popup">新增<?php echo $model_instance->getModelDesc();?></a>
+		<a href="<?php echo $this->getUrl($this->getController().'/update');?>" class="btn" rel="popup">Add<?php echo $model_instance->getModelDesc();?></a>
 	</div>
 	<?php endif;?>
 
@@ -41,20 +41,20 @@ include $this->resolveTemplate('inc/header.inc.php');
 			</label>
 		</div>
 		<div class="frm-item">
-			<input class="btn" type="submit" value="查询"/>
-			<a href="<?=$this->getUrl($this->getController());?>" class="btn">重置</a>
+			<input class="btn" type="submit" value="Search"/>
+			<a href="<?=$this->getUrl($this->getController());?>" class="btn">Reset</a>
 		</div>
 	</form>
 	<?php endif;?>
 
 	<table class="data-tbl" data-empty-fill="1">
-		<caption><?php echo $model_instance->getModelDesc();?>列表</caption>
+		<caption><?php echo $model_instance->getModelDesc();?></caption>
 		<thead>
 		<tr>
 			<?php foreach($display_fields as $field=>$alias):?>
 			<th><?php echo h($alias);?></th>
 			<?php endforeach;?>
-			<th style="width:60px">操作</th>
+			<th style="width:60px">Op.</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -72,7 +72,7 @@ include $this->resolveTemplate('inc/header.inc.php');
 				<td>
 					<?php if(in_array($field, $quick_update_fields)):?>
 					<span rel="quick-update-block"
-					      title="双击修改"
+					      title="Double click to update"
 					      data-type="<?php echo $define['type'];?>"
 					      data-val="<?php echo h($text);?>"
 					      data-pk="<?php echo $item[$pk];?>"
@@ -93,7 +93,7 @@ include $this->resolveTemplate('inc/header.inc.php');
 					<?php
 					$operation_link_list = $this->getData('operation_link_list') ?: array();
 					if(in_array(ControllerInterface::OP_DELETE, $operation_list)){
-						array_unshift($operation_link_list, '<a href="'.$this->getUrl($this->getController().'/delete', array($pk=>$item->$pk)).'" rel="async">删除</a>');
+						array_unshift($operation_link_list, '<a href="'.$this->getUrl($this->getController().'/delete', array($pk=>$item->$pk)).'" rel="async">Delete</a>');
 					}
 					if(in_array(ControllerInterface::OP_UPDATE, $operation_list)){
 						array_unshift($operation_link_list, '<a href="'.$this->getUrl($this->getController().'/update', array($pk=>$item->$pk)).'" rel="popup">修改</a>');
@@ -163,14 +163,14 @@ include $this->resolveTemplate('inc/header.inc.php');
 					}
 
 					p = new Pop({
-						title: '更新',
+						title: 'Update',
 						content: html,
 						buttons: [
-							{name:'保存', handler:function(){
+							{name:'Save', handler:function(){
 								var val = $(':input', p.container).val();
 								update(val);
 							}},
-							{name:'取消'}
+							{name:'Cancel'}
 						]
 					});
 					p.show();

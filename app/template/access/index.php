@@ -3,7 +3,7 @@ include $this->resolveTemplate('inc/header.inc.php');?>
 <div id="col-aside"><?php echo $this->getSideMenu()?></div>
 <div id="col-main">
 	<div class="operate-bar">
-		<a href="<?php echo $this->getUrl('access/updateAccess')?>" rel="popup"  class="btn">添加权限</a>
+		<a href="<?php echo $this->getUrl('access/updateAccess')?>" rel="popup"  class="btn">Add权限</a>
 	</div>
 	<table class="data-tbl" data-empty-fill="1">
 		<caption>权限列表</caption>
@@ -22,8 +22,8 @@ include $this->resolveTemplate('inc/header.inc.php');?>
 				<td><?php echo $action['desc'];?></td>
 				<td><?php echo $action['uri'];?></td>
 				<td>
-					<a href="<?php echo $this->getUrl('access/updateAccess', array('id'=>$action['id']));?>" rel="popup">编辑</a>
-					<a href="<?php echo $this->getUrl('access/removeAccess', array('id'=>$action['id']));?>" rel="async">删除</a>
+					<a href="<?php echo $this->getUrl('access/updateAccess', array('id'=>$action['id']));?>" rel="popup">Update</a>
+					<a href="<?php echo $this->getUrl('access/removeAccess', array('id'=>$action['id']));?>" rel="async">Delete</a>
 				</td>
 			</tr>
 		<?php endforeach;?>
