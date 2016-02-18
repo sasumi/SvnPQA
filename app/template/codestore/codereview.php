@@ -67,31 +67,29 @@ include $this->resolveTemplate('inc/header.inc.php');
                 </h3>
                 <div class="file-content">
                     <pre class="prettyprint lang-php linenums=true"></pre>
-                    <div class="comments">
-                        <ul>
-                            <li>asdfasdf</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
-            <div class="resizer resizer-h"></div>
-            <div class="col-history">
-                <h3 class="caption">Commit History</h3>
-                <div class="col-history-wrap">
-                    <table class="data-tbl" data-empty-fill="1">
-                        <thead>
-                        <tr>
-                            <th style="width:60px;">Version</th>
-                            <th style="width:60px;">Action</th>
-                            <th style="width:100px;">Author</th>
-                            <th style="width:150px;">Date</th>
-                            <th>备注</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="col-comment">
+                <ul class="comments" style="margin-top:200px">
+                    <?php while($a++ < 3):?>
+                    <li>
+                        <span class="u">Alice</span>
+                        <span class="cmt">
+                            asdfasdf asdf asdf asdf sadf<br/>df asdf asdf asdf sadf<br/>df asdf asdf asdf sadf<br/>df asdf asdf asdf sadf<br/>
+                        </span>
+                        <span class="date">03:32 03/12/32</span>
+                    </li>
+                    <?php endwhile;?>
+                </ul>
+                <ul class="comments">
+                    <li>
+                        <span class="u">Alice</span>
+                    <span class="cmt">
+                        asdfasdf asdf asdf asdf sadf<br/>df asdf asdf asdf sadf<br/>df asdf asdf asdf sadf<br/>df asdf asdf asdf sadf<br/>
+                    </span>
+                        <span class="date">03:32 03/12/32</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

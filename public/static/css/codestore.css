@@ -47,11 +47,15 @@ body li.L9 {background-color:#fafafa}
 .col-tree {flex:1; padding-right:10px; border-right:1px solid #333; width:180px; overflow:scroll;}
 .col-file-list {flex:1; padding:0 10px; border-left:1px solid #555; text-shadow:1px 1px 1px #1B1B1B}
 
-.col-code-explorer {padding:20px; width:75%; background-color:white; box-shadow:1px 1px 6px #000;}
-.col-history {flex:2; margin-right:20px;}
+.col-code-explorer {width:75%; background-color:white; box-shadow:1px 1px 6px #000; display:flex;}
 .code-explorer {display:flex; height:70%; background-color:white; overflow:hidden; border:1px solid #ddd; border-radius:3px; margin-top:10px;}
-.col-file-content {}
-.col-comment {flex:1; padding:10px;}
+.col-file-content {flex:4; padding:20px;}
+.col-comment {flex:1; padding:60px 10px 0 10px; background-color: #ccc; box-shadow:0 0 10px gray inset}
+
+.comments {padding:10px; margin-bottom:10px; color:gray; text-shadow: 1px 1px 1px white; background-color:#eee; border-radius:5px;}
+.comments li{position: relative; padding-left:40px; margin-bottom:10px;}
+.comments .u {display:block; width:24px; height:24px; border-radius:50px; background:url("../img/default_avatar.png") no-repeat white center; background-size:contain; position: absolute; text-indent:-9999em; overflow: hidden; left:5px; top:5px}
+.comments .date {color:#ccc; font-style:italic; font-size:10px;}
 
 .author-name {color:#666}
 
